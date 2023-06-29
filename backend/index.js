@@ -1,6 +1,8 @@
 import express from "express";
+import "./loadenvironment.js";
 import cors from "cors";
 import bodyParser from "body-parser";
+import articles from "./routes/articles.js";
 import { createDataSchema } from "./validators/create-data-schema.js";
 import { updateDataSchema } from "./validators/update-data-schema.js";
 
@@ -19,65 +21,67 @@ app.get("/", (_, res) => {
   });
 });
 
-var data = [{ id: 1, name: "Lost" }];
+app.use("/articles", articles);
 
-app.post("/data", (req, res) => {
-  const id = data.length;
-  const { body } = req;
+// var data = [{ id: 1, name: "Lost" }];
 
-  try {
-    const newData = createDataSchema.validateSync({
-      id: id + 1,
-      name: body.name,
-    });
-    data.push(newData);
-    res.json(data);
-  } catch (e) {
-    res.status(422).json({ error: e.errors });
-  }
-});
+// app.post("/data", (req, res) => {
+//   const id = data.length;
+//   const { body } = req;
 
-app.get("/data", (_, res) => {
-  res.json(data);
-});
+//   try {
+//     const newData = createDataSchema.validateSync({
+//       id: id + 1,
+//       name: body.name,
+//     });
+//     data.push(newData);
+//     res.json(data);
+//   } catch (e) {
+//     res.status(422).json({ error: e.errors });
+//   }
+// });
 
-app.put("/data/:id", (req, res) => {
-  const id = Number(req.params.id);
-  const { body } = req;
+// app.get("/data", (_, res) => {
+//   res.json(data);
+// });
 
-  try {
-    if (data.filter((obj) => obj.id === id).length === 0)
-      throw { errors: "ID not present. Invalid ID" };
-    const newData = updateDataSchema.validateSync({
-      id: id,
-      name: body.name,
-    });
-    data = data.map((obj) => {
-      if (obj.id === id) {
-        console.log("found");
-        return newData;
-      } else {
-        return obj;
-      }
-    });
+// app.put("/data/:id", (req, res) => {
+//   const id = Number(req.params.id);
+//   const { body } = req;
 
-    res.json(data);
-  } catch (e) {
-    res.status(422).json({ error: e.errors });
-  }
-});
+//   try {
+//     if (data.filter((obj) => obj.id === id).length === 0)
+//       throw { errors: "ID not present. Invalid ID" };
+//     const newData = updateDataSchema.validateSync({
+//       id: id,
+//       name: body.name,
+//     });
+//     data = data.map((obj) => {
+//       if (obj.id === id) {
+//         console.log("found");
+//         return newData;
+//       } else {
+//         return obj;
+//       }
+//     });
 
-app.delete("/data/:id", (req, res) => {
-  const id = Number(req.params.id);
-  try {
-    if (data.filter((obj) => obj.id === id).length === 0)
-      throw { errors: "ID not present. Invalid ID" };
-    data = data.filter((i) => i.id !== id);
-    res.json(data);
-  } catch (e) {
-    res.status(422).json({ error: e.errors });
-  }
-});
+//     res.json(data);
+//   } catch (e) {
+//     res.status(422).json({ error: e.errors });
+//   }
+// });
+
+// app.delete("/data/:id", (req, res) => {
+//   const id = Number(req.params.id);
+//   try {
+//     if (data.filter((obj) => obj.id === id).length === 0)
+//       throw { errors: "ID not present. Invalid ID" };
+//     data = data.filter((i) => i.id !== id);
+//     res.json(data);
+//   } catch (e) {
+//     res.status(422).json({ error: e.errors });
+//   }
+// });
 
 app.listen(port, () => {
   console.log(`app listening on port ${port}`);
