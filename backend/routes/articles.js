@@ -18,6 +18,8 @@ router.get("/", async (_, res) => {
 router.post("/", async (req, res) => {
   try {
     const collection = db.collection("articles");
+
+    // Todo: input data validation remaining
     const newDocument = {
       description: req.body.description,
     };
@@ -61,6 +63,7 @@ router.patch("/:id", async (req, res) => {
       return;
     }
 
+    // Todo: input data validation remaining
     const updates = {
       $set: {
         description: req.body.description,
