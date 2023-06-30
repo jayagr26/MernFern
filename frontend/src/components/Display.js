@@ -1,7 +1,7 @@
 import { Button } from "@mui/material";
-import "../App.css";
 import Card from "@mui/material/Card";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import "../App.css";
 
 const Display = (props) => {
   const [data, setData] = useState([]);
