@@ -1,5 +1,7 @@
 import ArticleIcon from "@mui/icons-material/Article";
+import CallSharpIcon from "@mui/icons-material/CallSharp";
 import HomeIcon from "@mui/icons-material/Home";
+import InfoIcon from "@mui/icons-material/Info";
 import MenuIcon from "@mui/icons-material/Menu";
 import {
   AppBar,
@@ -15,7 +17,7 @@ import {
   Typography,
 } from "@mui/material";
 import ListItemIcon from "@mui/material/ListItemIcon";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./App.css";
 import Display from "./components/Display";
 
@@ -46,38 +48,34 @@ function App() {
       onKeyDown={handleKeyDown}
     >
       <List>
-        <ListItem
-          tabIndex={0}
-          onClick={() => {
-            setDrawer(false);
-          }}
-          sx={{
-            backgroundColor: focusedItem === 0 ? "#e0e0e0" : "transparent",
-          }}
-        >
-          <ListItemButton>
-            <ListItemIcon>
-              <HomeIcon />
-            </ListItemIcon>
-            <ListItemText primary="Home" />
-          </ListItemButton>
-        </ListItem>
-        <ListItem
-          tabIndex={1}
-          onClick={() => {
-            setDrawer(false);
-          }}
-          sx={{
-            backgroundColor: focusedItem === 1 ? "#e0e0e0" : "transparent",
-          }}
-        >
-          <ListItemButton>
-            <ListItemIcon>
-              <ArticleIcon />
-            </ListItemIcon>
-            <ListItemText primary="Articles" />
-          </ListItemButton>
-        </ListItem>
+        {["Home", "Articles", "About", "Contact us"].map((item, index) => (
+          <ListItem
+            tabIndex={index}
+            onClick={() => {
+              setDrawer(false);
+            }}
+            sx={{
+              backgroundColor:
+                focusedItem === index ? "#e0e0e0" : "transparent",
+            }}
+            onMouseOver={() => setFocusedItem(index)}
+          >
+            <ListItemButton>
+              <ListItemIcon>
+                {item === "Home" ? (
+                  <HomeIcon />
+                ) : item === "Articles" ? (
+                  <ArticleIcon />
+                ) : item === "Contact us" ? (
+                  <CallSharpIcon />
+                ) : item === "About" ? (
+                  <InfoIcon />
+                ) : null}
+              </ListItemIcon>
+              <ListItemText primary={item} />
+            </ListItemButton>
+          </ListItem>
+        ))}
       </List>
     </Box>
   );
