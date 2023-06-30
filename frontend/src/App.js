@@ -21,6 +21,8 @@ import React, { useState } from "react";
 import "./App.css";
 import Display from "./components/Display";
 
+const drawerList = ["Home", "Articles", "About", "Contact us"];
+
 function App() {
   const [drawer, setDrawer] = useState(false);
   const [focusedItem, setFocusedItem] = useState(0);
@@ -31,7 +33,9 @@ function App() {
       setFocusedItem((prev) => (prev > 0 ? prev - 1 : prev));
     } else if (event.key === "ArrowDown") {
       event.preventDefault();
-      setFocusedItem((prev) => (prev < 1 ? prev + 1 : prev));
+      setFocusedItem((prev) =>
+        prev < drawerList.length - 1 ? prev + 1 : prev
+      );
     } else if (event.key === "Enter") {
       event.preventDefault();
       setDrawer(false);
@@ -48,7 +52,7 @@ function App() {
       onKeyDown={handleKeyDown}
     >
       <List>
-        {["Home", "Articles", "About", "Contact us"].map((item, index) => (
+        {drawerList.map((item, index) => (
           <ListItem
             tabIndex={index}
             onClick={() => {

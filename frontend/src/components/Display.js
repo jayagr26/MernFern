@@ -1,4 +1,11 @@
-import { Button } from "@mui/material";
+import {
+  Button,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  Paper,
+} from "@mui/material";
 import Card from "@mui/material/Card";
 import { useState } from "react";
 import "../App.css";
@@ -7,7 +14,7 @@ const Display = (props) => {
   const [data, setData] = useState([]);
 
   const fetchData = () => {
-    fetch("http://localhost:3000/data")
+    fetch("https://jsonplaceholder.typicode.com/todos/")
       .then((res) => res.json())
       .then((res) => setData(res));
   };
@@ -15,11 +22,23 @@ const Display = (props) => {
   return (
     <div className="display">
       <Card variant="outlined" className="display-card">
-        <div className="display-card-content">
-          {data.map((item, index) => (
-            <div key={index}>{item.name}</div>
-          ))}
-        </div>
+        <Card
+          variant="outlined"
+          sx={{ width: "250px", height: "300px", margin: "20px" }}
+        >
+          <List>
+            {data.map((item, index) => {
+              return (
+                <ListItem key={index} disablePadding>
+                  <ListItemButton>
+                    <ListItemText primary={item.title} />
+                  </ListItemButton>
+                </ListItem>
+              );
+            })}
+          </List>
+        </Card>
+
         <Button
           variant="contained"
           className="display-card-button"
