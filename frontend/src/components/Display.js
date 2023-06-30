@@ -4,7 +4,6 @@ import {
   ListItem,
   ListItemButton,
   ListItemText,
-  Paper,
 } from "@mui/material";
 import Card from "@mui/material/Card";
 import { useState } from "react";

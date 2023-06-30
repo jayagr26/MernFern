@@ -20,8 +20,18 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import React, { useState } from "react";
 import "./App.css";
 import Display from "./components/Display";
+import Article from "./components/Article";
+import About from "./components/About";
+import Contact from "./components/Contact";
 
-const drawerList = ["Home", "Articles", "About", "Contact us"];
+import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
+
+const drawerList = [
+  { label: "Home", icon: <HomeIcon />, path: "/" },
+  { label: "Articles", icon: <ArticleIcon />, path: "/articles" },
+  { label: "About", icon: <InfoIcon />, path: "/about" },
+  { label: "Contact us", icon: <CallSharpIcon />, path: "/contact" },
+];
 
 function App() {
   const [drawer, setDrawer] = useState(false);
@@ -64,19 +74,9 @@ function App() {
             }}
             onMouseOver={() => setFocusedItem(index)}
           >
-            <ListItemButton>
-              <ListItemIcon>
-                {item === "Home" ? (
-                  <HomeIcon />
-                ) : item === "Articles" ? (
-                  <ArticleIcon />
-                ) : item === "Contact us" ? (
-                  <CallSharpIcon />
-                ) : item === "About" ? (
-                  <InfoIcon />
-                ) : null}
-              </ListItemIcon>
-              <ListItemText primary={item} />
+            <ListItemButton component={Link} to={item.path}>
+              <ListItemIcon>{item.icon}</ListItemIcon>
+              <ListItemText primary={item.label} />
             </ListItemButton>
           </ListItem>
         ))}
@@ -85,39 +85,46 @@ function App() {
   );
 
   return (
-    <div className="App" tabIndex={-1} onKeyDown={handleKeyDown}>
-      <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static">
-          <Toolbar>
-            <IconButton
-              size="large"
-              edge="start"
-              color="inherit"
-              aria-label="menu"
-              sx={{ mr: 2 }}
-              onClick={() => setDrawer(true)}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              MernFern
-            </Typography>
-            <Button color="inherit">Login</Button>
-          </Toolbar>
-        </AppBar>
-      </Box>
+    <Router>
+      <div className="App" tabIndex={-1} onKeyDown={handleKeyDown}>
+        <Box sx={{ flexGrow: 1 }}>
+          <AppBar position="static">
+            <Toolbar>
+              <IconButton
+                size="large"
+                edge="start"
+                color="inherit"
+                aria-label="menu"
+                sx={{ mr: 2 }}
+                onClick={() => setDrawer(true)}
+              >
+                <MenuIcon />
+              </IconButton>
+              <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                MernFern
+              </Typography>
+              <Button color="inherit">Login</Button>
+            </Toolbar>
+          </AppBar>
+        </Box>
 
-      <SwipeableDrawer
-        anchor={"left"}
-        open={drawer}
-        onClose={() => setDrawer(false)}
-        onOpen={() => setDrawer(true)}
-      >
-        {list()}
-      </SwipeableDrawer>
+        <SwipeableDrawer
+          anchor={"left"}
+          open={drawer}
+          onClose={() => setDrawer(false)}
+          onOpen={() => setDrawer(true)}
+        >
+          {list()}
+        </SwipeableDrawer>
 
-      <Display content="Hello World" />
-    </div>
+        <Routes>
+          <Route path="/" element={<Display />} />
+          <Route path="/articles" element={<Article />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
