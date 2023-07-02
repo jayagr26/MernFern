@@ -1,4 +1,4 @@
-import { Button, TextField, Typography } from "@mui/material";
+import { Box, Button, TextField, Typography } from "@mui/material";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import "../App.css";
@@ -47,14 +47,23 @@ const CreateArticleForm = ({ setCreateForm }) => {
           error={formik.touched.article && Boolean(formik.errors.article)}
           helperText={formik.touched.article && formik.errors.article}
         />
-        <Button
-          raised
-          variant="contained"
-          type="submit"
-          sx={{ alignSelf: "center", m: "10px" }}
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "flex-end",
+          }}
         >
-          Submit
-        </Button>
+          <Button onClick={() => setCreateForm(false)}>Cancel</Button>
+          <Button
+            raised
+            variant="contained"
+            type="submit"
+            sx={{ alignSelf: "center", m: "10px" }}
+          >
+            Submit
+          </Button>
+        </Box>
       </form>
     </div>
   );
