@@ -44,15 +44,11 @@ const MyDrawer = ({ drawer, setDrawer }) => {
   };
 
   const list = () => (
-    <Box
-      sx={{ width: 250 }}
-      role="presentation"
-      onClick={() => {}}
-      onKeyDown={handleKeyDown}
-    >
+    <Box sx={{ width: 250 }} role="presentation" onKeyDown={handleKeyDown}>
       <List>
         {drawerList.map((item, index) => (
           <ListItem
+            key={item.label}
             tabIndex={index}
             onClick={() => {
               setDrawer(false);

@@ -7,7 +7,7 @@ const router = express.Router();
 router.get("/", async (_, res) => {
   try {
     const collection = db.collection("articles");
-    const results = await collection.find({}).limit(10).toArray();
+    const results = await collection.find({}).toArray();
     res.send(results).status(200);
   } catch (err) {
     console.log("Error fetching articles: ", err);
