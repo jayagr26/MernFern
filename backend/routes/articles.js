@@ -20,10 +20,9 @@ router.post("/", async (req, res) => {
     const collection = db.collection("articles");
 
     // Todo: input data validation remaining
-    const newDocument = {
-      description: req.body.description,
-    };
-    const result = await collection.insertOne(newDocument);
+    const { body } = req;
+    console.log(body);
+    const result = await collection.insertOne(body);
     res.send(result).status(200);
   } catch (err) {
     console.log("Error creating article: ", err);

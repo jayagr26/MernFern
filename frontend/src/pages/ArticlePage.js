@@ -10,9 +10,9 @@ import {
   Grid,
   IconButton,
 } from "@mui/material";
+import { useState } from "react";
 import { useMutation, useQuery } from "react-query";
 import apiClient from "../api";
-import { useState } from "react";
 import CreateArticleForm from "../components/CreateArticleForm";
 
 const Article = () => {
@@ -22,25 +22,25 @@ const Article = () => {
     isLoading: isFetchingArticles,
     data: articles,
     refetch: refetchAllArticles,
-  } = useQuery(
-    "fetch-articles",
-    async () => {
-      return await apiClient.get("/articles");
-    },
+  } = useQuery("fetch-articles", async () => {
+    return await apiClient.get("/articles");
+  });
+
+  const { isLoading: isDeletingArticle, mutate: deleteArticle } = useMutation(
+    (id) => apiClient.delete(`/articles/${id}`),
+    // Todo: Handle error case
     {
-      enabled: false,
-      retry: 1,
+      onSuccess: () => refetchAllArticles(),
     }
   );
 
-  const { isLoading: isDeletingArticle, mutate: deleteArticle } = useMutation(
-    (id) => apiClient.delete(`/articles/${id}`)
-  );
-
-  return isFetchingArticles ? (
+  return isFetchingArticles || isDeletingArticle ? (
     <CircularProgress className="center" />
   ) : createForm ? (
-    <CreateArticleForm setCreateForm={setCreateForm} />
+    <CreateArticleForm
+      setCreateForm={setCreateForm}
+      refetchAllArticles={refetchAllArticles}
+    />
   ) : (
     <Box>
       <Box
@@ -51,9 +51,6 @@ const Article = () => {
           justifyContent: "center",
         }}
       >
-        <Button variant="contained" sx={{ m: 2 }} onClick={refetchAllArticles}>
-          Fetch
-        </Button>
         <Button
           variant="contained"
           sx={{ m: 2 }}
@@ -67,8 +64,20 @@ const Article = () => {
           articles.data.map((item, index) => {
             return (
               <Grid item xs={12} sm={6} key={index} sx={{ p: "5px" }}>
-                <Card raised>
-                  <CardContent>{item.description || ""}</CardContent>
+                <Card
+                  raised
+                  sx={{
+                    width: "400px",
+                    height: "300px",
+                    display: "flex",
+                    flexDirection: "column",
+                    margin: "auto",
+                  }}
+                >
+                  <CardContent sx={{ flexGrow: 1 }}>
+                    <h3>{item.title}</h3>
+                    {item.article || ""}
+                  </CardContent>
                   <CardActions sx={{ justifyContent: "flex-end" }}>
                     <IconButton>
                       <EditIcon />
