@@ -12,8 +12,9 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { useMutation, useQuery } from "react-query";
-import apiClient from "../api";
+import articleApiClient from "../services/article.service";
 import CreateArticleForm from "../components/CreateArticleForm";
+import AuthHeader from "../services/auth-header";
 
 const Article = () => {
   const [createForm, setCreateForm] = useState(false);
@@ -23,11 +24,11 @@ const Article = () => {
     data: articles,
     refetch: refetchAllArticles,
   } = useQuery("fetch-articles", async () => {
-    return await apiClient.get("/articles");
+    return await articleApiClient.get("/", { headers: AuthHeader() });
   });
 
   const { isLoading: isDeletingArticle, mutate: deleteArticle } = useMutation(
-    (id) => apiClient.delete(`/articles/${id}`),
+    (id) => articleApiClient.delete(`/${id}`, { headers: AuthHeader() }),
     // Todo: Handle error case
     {
       onSuccess: () => refetchAllArticles(),

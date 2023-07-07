@@ -9,6 +9,8 @@ import AppBar from "./components/MyAppBar";
 import Drawer from "./components/MyDrawer";
 import PageNotFound from "./pages/PageNotFound";
 import { QueryClient, QueryClientProvider } from "react-query";
+import Login from "./pages/LoginPage";
+import Signup from "./pages/SignupPage";
 
 function App() {
   const [drawer, setDrawer] = useState(false);
@@ -30,6 +32,9 @@ function App() {
               <Route path="/articles" element={<Article />} />
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
+
               <Route path="*" element={<PageNotFound />} />
             </Routes>
           </div>

@@ -3,8 +3,9 @@ import { useFormik } from "formik";
 import { useMutation } from "react-query";
 import * as yup from "yup";
 import "../App.css";
-import apiClient from "../api";
+import apiClient from "../services/article.service";
 import { CircularProgress } from "@mui/material";
+import AuthHeader from "../services/auth-header";
 
 const validationSchema = yup.object({
   title: yup
@@ -21,8 +22,8 @@ const CreateArticleForm = ({ setCreateForm, refetchAllArticles }) => {
         title: values.title,
         article: values.article,
       };
-      return await apiClient.post(`/articles`, payload, {
-        headers: { "Content-Type": "application/json" },
+      return await apiClient.post("/", payload, {
+        headers: { "Content-Type": "application/json", ...AuthHeader() },
       });
     },
     {
@@ -47,43 +48,50 @@ const CreateArticleForm = ({ setCreateForm, refetchAllArticles }) => {
       {isCreatingArticle ? (
         <CircularProgress className="center" />
       ) : (
-        <form className="form" onSubmit={formik.handleSubmit}>
-          <Typography variant="h5" sx={{ m: 2 }}>
-            Create Article
-          </Typography>
-          <TextField
-            sx={{ m: "5px" }}
-            id="title"
-            name="title"
-            label="Title"
-            value={formik.values.title}
-            onChange={formik.handleChange}
-            error={formik.touched.title && Boolean(formik.errors.title)}
-            helperText={formik.touched.title && formik.errors.title}
-          />
-          <TextField
-            sx={{ m: "5px" }}
-            id="article"
-            name="article"
-            label="Article"
-            value={formik.values.article}
-            onChange={formik.handleChange}
-            error={formik.touched.article && Boolean(formik.errors.article)}
-            helperText={formik.touched.article && formik.errors.article}
-          />
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "flex-end",
-            }}
-          >
-            <Button onClick={() => setCreateForm(false)}>Cancel</Button>
-            <Button raised variant="contained" type="submit" sx={{ m: "10px" }}>
-              Submit
-            </Button>
-          </Box>
-        </form>
+        <Box sx={{ width: "500px" }}>
+          <form className="form" onSubmit={formik.handleSubmit}>
+            <Typography variant="h5" sx={{ m: 2 }}>
+              Create Article
+            </Typography>
+            <TextField
+              sx={{ m: "5px" }}
+              id="title"
+              name="title"
+              label="Title"
+              value={formik.values.title}
+              onChange={formik.handleChange}
+              error={formik.touched.title && Boolean(formik.errors.title)}
+              helperText={formik.touched.title && formik.errors.title}
+            />
+            <TextField
+              sx={{ m: "5px" }}
+              id="article"
+              name="article"
+              label="Article"
+              value={formik.values.article}
+              onChange={formik.handleChange}
+              error={formik.touched.article && Boolean(formik.errors.article)}
+              helperText={formik.touched.article && formik.errors.article}
+            />
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "flex-end",
+              }}
+            >
+              <Button onClick={() => setCreateForm(false)}>Cancel</Button>
+              <Button
+                raised
+                variant="contained"
+                type="submit"
+                sx={{ m: "10px" }}
+              >
+                Submit
+              </Button>
+            </Box>
+          </form>
+        </Box>
       )}
     </div>
   );

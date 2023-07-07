@@ -1,7 +1,9 @@
+import Home from "../components/Home";
+
 const About = () => {
   return (
     <>
-      <h1>This is About us page</h1>
+      <Home />
     </>
   );
 };
