@@ -8,7 +8,7 @@ const AuthService = () => {
       username: username,
       password: password,
     };
-    return await axios.post(API_URL + "signin", payload).then((res) => {
+    return await axios.post(API_URL + "login", payload).then((res) => {
       if (res.data.accessToken) {
         localStorage.setItem("user", JSON.stringify(res.data));
       }

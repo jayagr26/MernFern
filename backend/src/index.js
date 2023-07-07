@@ -1,7 +1,9 @@
+import cors from "cors";
 import express from "express";
 import "./loadenvironment.js";
-import cors from "cors";
+import authJWT from "./middlewares/authJWT.js";
 import articles from "./routes/articles.js";
+import authRoutes from "./routes/auth-route.js";
 
 const PORT = 3000;
 const app = express();
@@ -15,14 +17,18 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+const API_PATH_WITH_VERSION = "/api/v1";
+
 // routes
-app.get("/", (_, res) => {
+app.get(API_PATH_WITH_VERSION + "/", (_, res) => {
   res.json({
     data: "Hello World!!",
   });
 });
 
-app.use("/articles", articles);
+app.use(API_PATH_WITH_VERSION + "/auth", authRoutes);
+
+app.use(API_PATH_WITH_VERSION + "/articles", [authJWT.verifyToken], articles);
 
 app.listen(PORT, () => {
   console.log(`app listening on port ${PORT}`);
