@@ -18,8 +18,6 @@ const checkDuplicateUsernameOrEmail = async (req, res, next) => {
     }
     next();
   } catch (err) {
-    console.log("hello1");
-    console.log(err);
     return res.status(500).send({ message: err });
   }
 };

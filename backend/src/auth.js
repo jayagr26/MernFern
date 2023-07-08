@@ -15,7 +15,6 @@ export const signup = async (req, res) => {
     await collection.insertOne(user);
     return res.status(200).send({ message: "User registered sucessfully!" });
   } catch (err) {
-    console.log("hello2");
     return res.status(500).send({ message: err });
   }
 };
@@ -44,8 +43,6 @@ export const login = async (req, res) => {
       return res.status(404).send({ message: "Password incorrect!" });
     }
   } catch (err) {
-    console.log("hello3");
-    console.log(err);
     return res.status(503).send({ message: err });
   }
 };
