@@ -7,9 +7,13 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../App";
+import AuthService from "../services/auth.service";
 
 const MyAppBar = ({ setDrawer }) => {
+  const { loggedin, setLoggedIn } = useContext(UserContext);
   const navigate = useNavigate();
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -28,9 +32,22 @@ const MyAppBar = ({ setDrawer }) => {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             MernFern
           </Typography>
-          <Button color="inherit" onClick={() => navigate("/login")}>
-            Login
-          </Button>
+          {loggedin ? (
+            <Button
+              color="inherit"
+              onClick={() => {
+                AuthService.logout();
+                setLoggedIn(false);
+                navigate("/login");
+              }}
+            >
+              Logout
+            </Button>
+          ) : (
+            <Button color="inherit" onClick={() => navigate("/login")}>
+              Login
+            </Button>
+          )}
         </Toolbar>
       </AppBar>
     </Box>

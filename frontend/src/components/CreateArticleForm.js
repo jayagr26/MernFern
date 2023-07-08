@@ -5,7 +5,7 @@ import * as yup from "yup";
 import "../App.css";
 import apiClient from "../services/article.service";
 import { CircularProgress } from "@mui/material";
-import AuthHeader from "../services/auth-header";
+import AuthHeader from "../auth-header";
 
 const validationSchema = yup.object({
   title: yup
