@@ -1,19 +1,18 @@
-import verifySignup from "../middlewares/verifySignup.js";
-import { signup, login } from "../auth.js";
 import express from "express";
+import { login, signup } from "../auth.js";
+import middlewares from "../middlewares/index.js";
 
 const router = express.Router();
 
-router.use((_, res, next) => {
-  res.header(
-    "Access-Control-Allow-Headers",
-    "x-access-token, Origin, Content-Type, Accept"
-  );
-  next();
-});
+router.post(
+  "/signup",
+  [
+    middlewares.verifySignup.validateData,
+    middlewares.verifySignup.checkDuplicateUsernameOrEmail,
+  ],
+  signup
+);
 
-router.post("/signup", [verifySignup.checkDuplicateUsernameOrEmail], signup);
-
-router.post("/login", login);
+router.post("/login", [middlewares.verifyLogin.validateData], login);
 
 export default router;

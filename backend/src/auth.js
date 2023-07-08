@@ -1,7 +1,7 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import db from "./db/conn.js";
 import secret from "./config.js";
+import db from "./db/conn.js";
 
 export const signup = async (req, res) => {
   const user = {

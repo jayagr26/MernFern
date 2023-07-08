@@ -1,6 +1,6 @@
+import { ObjectId } from "bson";
 import express from "express";
 import db from "../db/conn.js";
-import { ObjectId } from "bson";
 
 const router = express.Router();
 
