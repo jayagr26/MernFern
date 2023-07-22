@@ -11,9 +11,12 @@ const validateData = async (req, res, next) => {
     await newUserValidationSchema.validate(user);
   } catch (err) {
     if (err.name === "ValidationError") {
-      return res.status(400).send({ message: err.message });
+      console.log("Invalid user registration data: " + err.message);
+      return res
+        .status(400)
+        .send({ message: "Invalid user registration data: " + err.message });
     }
-    return res.status(500).send({ message: err });
+    return res.status(500).send({ message: "Internal Server Error" });
   }
   next();
 };
@@ -36,7 +39,8 @@ const checkDuplicateUsernameOrEmail = async (req, res, next) => {
     }
     next();
   } catch (err) {
-    return res.status(500).send({ message: err });
+    console.log("Error checking duplicate user: " + err.message);
+    return res.status(500).send({ message: "Internal Server Error" });
   }
 };
 

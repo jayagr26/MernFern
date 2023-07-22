@@ -13,7 +13,7 @@ import {
   SwipeableDrawer,
 } from "@mui/material";
 import ListItemIcon from "@mui/material/ListItemIcon";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 const drawerList = [
@@ -84,7 +84,7 @@ const MyDrawer = ({ drawer, setDrawer }) => {
             margin: "10px",
           }}
           src="./prof-img.jpg"
-        ></img>
+        />
         <div></div>
         <Button>Profile</Button>
       </div>

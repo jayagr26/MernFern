@@ -2,12 +2,16 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import secret from "./config.js";
 import db from "./db/conn.js";
+import {
+  isCorrectPassword,
+  encryptPassword,
+} from "./helpers/passwordCrypto.js";
 
 export const signup = async (req, res) => {
   const user = {
     username: req.body.username,
     email: req.body.email,
-    password: bcrypt.hashSync(req.body.password, 8),
+    password: encryptPassword({ password: req.body.password }),
   };
 
   try {
@@ -15,7 +19,8 @@ export const signup = async (req, res) => {
     await collection.insertOne(user);
     return res.status(200).send({ message: "User registered sucessfully!" });
   } catch (err) {
-    return res.status(500).send({ message: err });
+    console.log("Error registering user: " + err.message);
+    return res.status(500).send({ message: "Error Registering User!" });
   }
 };
 
@@ -28,7 +33,12 @@ export const login = async (req, res) => {
       return res.status(404).send({ message: "User does not exists!" });
     }
 
-    if (bcrypt.compareSync(req.body.password, user.password)) {
+    if (
+      isCorrectPassword({
+        currentPassword: user.password,
+        input: req.body.password,
+      })
+    ) {
       const token = jwt.sign({ id: user.username }, secret.secret, {
         algorithm: "HS256",
         allowInsecureKeySizes: true,
@@ -43,6 +53,7 @@ export const login = async (req, res) => {
       return res.status(404).send({ message: "Password incorrect!" });
     }
   } catch (err) {
-    return res.status(503).send({ message: err });
+    console.log("Error logging user: " + err.message);
+    return res.status(503).send({ message: "Error in Logging user!" });
   }
 };
