@@ -2,8 +2,10 @@ import ArticleIcon from "@mui/icons-material/Article";
 import CallSharpIcon from "@mui/icons-material/CallSharp";
 import HomeIcon from "@mui/icons-material/Home";
 import InfoIcon from "@mui/icons-material/Info";
+import SettingsIcon from "@mui/icons-material/Settings";
 import {
   Box,
+  Button,
   List,
   ListItem,
   ListItemButton,
@@ -11,14 +13,15 @@ import {
   SwipeableDrawer,
 } from "@mui/material";
 import ListItemIcon from "@mui/material/ListItemIcon";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 const drawerList = [
   { label: "Home", icon: <HomeIcon />, path: "/" },
   { label: "Articles", icon: <ArticleIcon />, path: "/articles" },
-  { label: "About", icon: <InfoIcon />, path: "/about" },
   { label: "Contact us", icon: <CallSharpIcon />, path: "/contact" },
+  { label: "About", icon: <InfoIcon />, path: "/about" },
+  { label: "Settings", icon: <SettingsIcon />, path: "/settings" },
 ];
 
 const MyDrawer = ({ drawer, setDrawer }) => {
@@ -43,9 +46,64 @@ const MyDrawer = ({ drawer, setDrawer }) => {
     }
   };
 
+  useEffect(() => {
+    const handleMouseMove = (event) => {
+      const mouseX = event.clientX;
+      if (mouseX <= 5) {
+        setDrawer(true);
+      }
+      if (mouseX >= 250) {
+        setDrawer(false);
+      }
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+    };
+  }, [setDrawer]);
+
   const list = () => (
-    <Box sx={{ width: 250 }} role="presentation" onKeyDown={handleKeyDown}>
-      <List>
+    <Box
+      sx={{
+        height: "100%",
+        width: 250,
+        overflow: "hidden",
+        display: "flex",
+        flexDirection: "column",
+      }}
+      role="presentation"
+      onKeyDown={handleKeyDown}
+    >
+      <div
+        style={{
+          backgroundColor: "#d7e2f5",
+          height: "200px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <img
+          style={{
+            borderRadius: "50%",
+            maxHeight: "120px",
+            margin: "10px",
+          }}
+          src="./prof-img.jpg"
+        ></img>
+        <div></div>
+        <Button>Profile</Button>
+      </div>
+      <List
+        sx={{
+          flexGrow: 1,
+          display: "flex",
+          flexDirection: "column",
+          p: 0,
+        }}
+      >
         {drawerList.map((item, index) => (
           <ListItem
             key={item.label}
@@ -54,8 +112,9 @@ const MyDrawer = ({ drawer, setDrawer }) => {
               setDrawer(false);
             }}
             sx={{
+              mt: index === 2 ? "auto" : 0,
               backgroundColor:
-                focusedItem === index ? "#e0e0e0" : "transparent",
+                focusedItem === index ? "#d7e2f5" : "transparent",
             }}
             onMouseOver={() => setFocusedItem(index)}
           >
@@ -70,7 +129,7 @@ const MyDrawer = ({ drawer, setDrawer }) => {
   );
 
   return (
-    <div tabIndex={-1} onKeyDown={handleKeyDown}>
+    <div tabIndex={-1} onKeyDown={handleKeyDown} className="class1">
       <SwipeableDrawer
         anchor={"left"}
         open={drawer}
