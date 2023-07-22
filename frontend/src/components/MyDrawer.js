@@ -25,7 +25,7 @@ const drawerList = [
 ];
 
 const MyDrawer = ({ drawer, setDrawer }) => {
-  const [focusedItem, setFocusedItem] = useState(0);
+  const [focusedItem, setFocusedItem] = useState(-1);
   const navigate = useNavigate();
 
   const handleKeyDown = (event) => {
@@ -46,23 +46,15 @@ const MyDrawer = ({ drawer, setDrawer }) => {
     }
   };
 
-  useEffect(() => {
-    const handleMouseMove = (event) => {
-      const mouseX = event.clientX;
-      if (mouseX <= 5) {
-        setDrawer(true);
-      }
-      if (mouseX >= 250) {
-        setDrawer(false);
-      }
-    };
-
-    window.addEventListener("mousemove", handleMouseMove);
-
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-    };
-  }, [setDrawer]);
+  const handleMouseMove = (event) => {
+    const mouseX = event.clientX;
+    if (mouseX <= 5) {
+      setDrawer(true);
+    }
+    if (mouseX >= 250) {
+      setDrawer(false);
+    }
+  };
 
   const list = () => (
     <Box
@@ -117,6 +109,7 @@ const MyDrawer = ({ drawer, setDrawer }) => {
                 focusedItem === index ? "#d7e2f5" : "transparent",
             }}
             onMouseOver={() => setFocusedItem(index)}
+            onMouseLeave={() => setFocusedItem(-1)}
           >
             <ListItemButton component={Link} to={item.path}>
               <ListItemIcon>{item.icon}</ListItemIcon>
@@ -129,7 +122,7 @@ const MyDrawer = ({ drawer, setDrawer }) => {
   );
 
   return (
-    <div tabIndex={-1} onKeyDown={handleKeyDown} className="class1">
+    <div tabIndex={-1} onKeyDown={handleKeyDown} onMouseMove={handleMouseMove}>
       <SwipeableDrawer
         anchor={"left"}
         open={drawer}
