@@ -1,11 +1,13 @@
-import { Box, Button, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useFormik } from "formik";
-import { useMutation } from "react-query";
 import * as yup from "yup";
 import "../App.css";
-import apiClient from "../services/article.service";
-import { CircularProgress } from "@mui/material";
-import AuthHeader from "../auth-header";
 
 const validationSchema = yup.object({
   title: yup
@@ -15,31 +17,16 @@ const validationSchema = yup.object({
   article: yup.string("Enter your article").required("Article is required"),
 });
 
-const CreateArticleForm = ({ setCreateForm, refetchAllArticles }) => {
-  const { isLoading: isCreatingArticle, mutate: postArticle } = useMutation(
-    async (values) => {
-      const payload = {
-        title: values.title,
-        article: values.article,
-      };
-      return await apiClient.post("/", payload, {
-        headers: { "Content-Type": "application/json", ...AuthHeader() },
-      });
-    },
-    {
-      // Todo: Handle error case
-      onSuccess: () => {
-        setCreateForm(false);
-        refetchAllArticles();
-      },
-    }
-  );
-
+const CreateArticleForm = ({
+  setCreateForm,
+  isCreatingArticle,
+  postArticle,
+}) => {
   const formik = useFormik({
     initialValues: { title: "", article: "" },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      postArticle(values);
+      postArticle({ title: values.title, article: values.article });
     },
   });
 

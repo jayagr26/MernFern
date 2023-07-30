@@ -86,7 +86,14 @@ const MyDrawer = ({ drawer, setDrawer }) => {
           src="./prof-img.jpg"
         />
         <div></div>
-        <Button>Profile</Button>
+        <Button
+          onClick={() => {
+            navigate("/profile");
+            setDrawer(false);
+          }}
+        >
+          View Profile
+        </Button>
       </div>
       <List
         sx={{

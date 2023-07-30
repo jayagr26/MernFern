@@ -10,7 +10,6 @@ body {
 }
 
 .content {
-  align-self: center;
   flex-grow: 1;
 }
 

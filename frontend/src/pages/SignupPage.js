@@ -8,13 +8,13 @@ import {
   Typography,
 } from "@mui/material";
 import { useFormik } from "formik";
+import { useContext, useEffect } from "react";
 import { useMutation } from "react-query";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import * as yup from "yup";
-import "../App.css";
-import authServiceApiClient from "../services/auth.service";
-import { useContext, useEffect } from "react";
 import { UserContext } from "../App";
+import "../App.css";
+import AuthService from "../services/auth.service";
 
 const validationSchema = yup.object({
   username: yup
@@ -41,11 +41,11 @@ const Signup = () => {
     if (loggedin) {
       navigate("/");
     }
-  }, [loggedin]);
+  }, [loggedin, navigate]);
 
   const { isLoading: isRegisteringUser, mutate: registerUser } = useMutation(
     ({ username, email, password }) =>
-      authServiceApiClient.register({ username, email, password }),
+      AuthService.register({ username, email, password }),
     {
       onSuccess: () => {
         navigate("/");
@@ -75,10 +75,11 @@ const Signup = () => {
   return (
     <Box
       sx={{
-        width: "100vh",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
+        justifyContent: "center",
+        height: "100%",
       }}
     >
       {isRegisteringUser ? (

@@ -7,14 +7,13 @@ import {
   Typography,
 } from "@mui/material";
 import { useFormik } from "formik";
-import * as yup from "yup";
-import "../App.css";
-import { useNavigate } from "react-router-dom";
-import { Link as RouterLink } from "react-router-dom";
-import { useMutation } from "react-query";
-import AuthService from "../services/auth.service";
 import { useContext, useEffect } from "react";
+import { useMutation } from "react-query";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
+import * as yup from "yup";
 import { UserContext } from "../App";
+import "../App.css";
+import AuthService from "../services/auth.service";
 
 const validationSchema = yup.object({
   username: yup.string().required("Username is required"),
@@ -55,13 +54,15 @@ const Login = () => {
       });
     },
   });
+
   return (
     <Box
       sx={{
-        width: "100vh",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
+        justifyContent: "center",
+        height: "100%",
       }}
     >
       {isLogging ? (
